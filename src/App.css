@@ -2,8 +2,21 @@
 @media(max-width:540px){.app{margin:0;border:0;width:100%;box-shadow:none}header{padding:18px 15px 12px}main{padding:24px 21px 40px}.brand strong{font-size:22px}.avatar-layout{gap:11px}.badge{flex-basis:100px}.badge-scroll{gap:19px}.item{font-size:11px;padding:7px;gap:6px}.item-icon{width:36px;height:43px;font-size:25px}.avatar-preview svg{min-height:340px}h1{font-size:28px}.product{gap:11px}.product .item-icon{width:58px;height:69px;font-size:36px}.product h2{font-size:14px}.product p{font-size:11px}.purchase{min-width:65px}.stats .card{font-size:12px}.contact{gap:10px}.contact h2{font-size:16px}.contact p{font-size:12px}.face{height:55px;width:55px;font-size:32px}}
 @media(max-width:360px){main{padding:20px 14px 35px}nav button{font-size:10px}.avatar-layout{gap:8px}.equipment{padding:11px 6px}.item{gap:4px}.item-icon{width:31px}.avatar-side>.button{font-size:10px}.heading-button{font-size:14px}.badge{flex-basis:95px}.brand strong{font-size:21px}.user-name{max-width:60px}.product{gap:7px}.product .item-icon{width:45px;font-size:30px}.game-grid{gap:6px;padding:10px}.game-grid .chip{font-size:10px}.card{padding:15px}.equipment{padding:10px 6px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+/* Keep the hobby menu over the existing content inside the mobile card. */
+.review-header{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.review-controls{margin-left:auto;max-width:100%}
+.review-controls .review-toolbar{flex-wrap:nowrap}
+.review-profile-toolbar>.button{width:100%}
+.review-toolbar .select-hobbies:hover:not(:disabled),.review-toolbar .add-hobbies:hover:not(:disabled),.toolbar .edit-personal-info:hover:not(:disabled){background:var(--green);border-color:#17432f;color:white}
+.review-toolbar .delete-hobbies:hover:not(:disabled){background:#b33b35;border-color:#842b27;color:white}
+.hobby-picker-content{position:relative}
+.hobby-picker-content>.hobby-dropdown{position:absolute;inset:0;z-index:2;margin:0;display:flex;flex-direction:column;gap:8px;min-height:0;box-shadow:0 4px 12px #173c311a}
+.hobby-picker-content>.hobby-dropdown>input{flex-shrink:0}
+.hobby-picker-content>.hobby-dropdown>div{flex:1;min-height:0;max-height:none;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#a2b99b #edf2e7}
 /* Scenario refinements: framed equipment control and horizontal badge strip. */
 .equipment .heading-button{border:2px solid var(--border);border-bottom:3px solid #bdcfb3;border-radius:9px;background:#f5f8ed;padding:10px 8px;margin-bottom:12px;align-items:center}
+.avatar-side>.button:hover:not(:disabled),.equipment .heading-button:hover:not(:disabled){background:var(--green);border-color:#17432f;color:white}
+.item-list.large{height:306px;max-height:none;grid-auto-rows:90px;align-content:start;overscroll-behavior:contain}
 .badge-scroll{cursor:grab;touch-action:pan-x;user-select:none;scrollbar-width:thin;padding-bottom:12px}
 .badge-scroll:active{cursor:grabbing}
 .badge-scroll .badge{flex:0 0 135px}

@@ -14,7 +14,6 @@ export default function Onboarding({page, state, update, navigate, finish, editP
   const [search, setSearch] = useState('');
   const [open, setOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [reviewNotice, setReviewNotice] = useState('');
   const form = useRef(null);
 
   useEffect(() => {
@@ -22,9 +21,9 @@ export default function Onboarding({page, state, update, navigate, finish, editP
     if (page === 'profile') screen = profileStage === 'confirm' ? 3 : profileStage === 'saved' ? 4 : Object.keys(errors).length ? 2 : 1;
     else if (page === 'preferences-saved') screen = 16;
     else if (page === 'preferences') screen = open ? 6 : state.onboarded ? 14 : 5;
-    else screen = confirmDelete ? 12 : detail ? 8 : selecting ? 9 : reviewNotice ? 13 : 7;
+    else screen = confirmDelete ? 12 : detail ? 8 : selecting ? 9 : 7;
     onReference(`Final UX scenarios — Scenario 1, Screen ${screen} (PDF page ${screen + 1})`);
-  }, [page, profileStage, errors, open, state.onboarded, confirmDelete, detail, selecting, reviewNotice, onReference]);
+  }, [page, profileStage, errors, open, state.onboarded, confirmDelete, detail, selecting, onReference]);
 
   function submitProfile(e) {
     e.preventDefault();
@@ -48,7 +47,6 @@ export default function Onboarding({page, state, update, navigate, finish, editP
     setConfirmDelete(false);
     setMarked([]);
     setSelecting(false);
-    setReviewNotice('Selected hobbies deleted.');
   }
 
   return <>
@@ -89,16 +87,27 @@ export default function Onboarding({page, state, update, navigate, finish, editP
     </> : page === 'preferences' ? <>
       <h1>Preferences</h1>
       <Card>
-        <div className="toolbar"><Button secondary onClick={editProfile}>Edit Personal Info</Button></div>
-        <button className="dropdown" aria-expanded={open} onClick={() => setOpen(!open)}>Dropdown list of hobbies <span>{open ? '▴' : '▾'}</span></button>
-        {open && <div className="hobby-dropdown">
+        <div className="toolbar"><Button secondary className="edit-personal-info" onClick={editProfile}>Edit Personal Info</Button></div>
+        <div className="hobby-picker" onKeyDown={e => {
+          if (e.key === 'Escape' && open) {
+            setOpen(false);
+            e.currentTarget.querySelector('.dropdown').focus();
+          }
+        }}>
+        <button className="dropdown" aria-expanded={open} aria-controls="hobby-options" onClick={() => setOpen(!open)}>Dropdown list of hobbies <span>{open ? '▴' : '▾'}</span></button>
+        <div className="hobby-picker-content">
+        {open && <div className="hobby-dropdown" id="hobby-options" role="group" aria-label="Hobbies">
           <input aria-label="Search hobbies" placeholder="Search hobbies…" value={search} onChange={e => setSearch(e.target.value)}/>
           <div>{hobbies.filter(h => h.toLowerCase().includes(search.toLowerCase())).map(h => <button key={h} aria-pressed={state.hobbies.includes(h)} onClick={() => toggle(h)}>{h}<span>{state.hobbies.includes(h) ? '✓' : '+'}</span></button>)}</div>
         </div>}
+        <div inert={open}>
         <h2>Most popular hobbies</h2>
         <div className="hobby-grid">{hobbies.slice(0, 6).map(h => <button className={`chip ${state.hobbies.includes(h) ? 'selected' : ''}`} key={h} onClick={() => toggle(h)} aria-pressed={state.hobbies.includes(h)}>{h}</button>)}</div>
         <h2>Hobbies selected</h2>
         <div className="selected-hobbies hobby-grid">{state.hobbies.length ? state.hobbies.map(h => <button className="chip selected" key={h} onClick={() => toggle(h)} aria-label={`Remove ${h}`}>{h} ×</button>) : <p className="muted">Choose your interests above.</p>}</div>
+        </div>
+        </div>
+        </div>
       </Card>
       <div className="actions"><Button secondary onClick={back}>Back</Button><Button disabled={!state.hobbies.length} onClick={() => navigate('review')}>Confirm</Button></div>
     </> : <>
@@ -107,13 +116,16 @@ export default function Onboarding({page, state, update, navigate, finish, editP
         <ul className="delete-list">{marked.map(h => <li key={h}>{h}</li>)}</ul>
       </Confirmation> : <>
         <Card>
-          <div className="toolbar review-toolbar"><h2>Your list</h2>
-            <Button secondary aria-pressed={selecting} onClick={() => { setSelecting(!selecting); setMarked([]); setDetail(null); }}>{selecting ? 'Unselect' : 'Select'}</Button>
-            <Button secondary disabled={!marked.length} onClick={() => setConfirmDelete(true)}>Delete</Button>
-            <Button secondary onClick={() => navigate('preferences')}>Add</Button>
+          <div className="review-header"><h2>Your list</h2>
+          <div className="review-controls">
+          <div className="toolbar review-toolbar">
+            <Button secondary className="select-hobbies" aria-pressed={selecting} onClick={() => { setSelecting(!selecting); setMarked([]); setDetail(null); }}>{selecting ? 'Unselect' : 'Select'}</Button>
+            <Button secondary className="delete-hobbies" disabled={!marked.length} onClick={() => setConfirmDelete(true)}>Delete</Button>
+            <Button secondary className="add-hobbies" onClick={() => navigate('preferences')}>Add</Button>
           </div>
-          <div className="toolbar"><Button secondary onClick={editProfile}>Edit Personal Info</Button></div>
-          {reviewNotice && <p className="save-status" role="status">{reviewNotice}</p>}
+          <div className="toolbar review-profile-toolbar"><Button secondary className="edit-personal-info" onClick={editProfile}>Edit Personal Info</Button></div>
+          </div>
+          </div>
           <div className="hobby-grid review-hobbies">{state.hobbies.map(h => <button className={`chip ${marked.includes(h) ? 'marked' : ''} ${detail === h ? 'selected' : ''}`} aria-pressed={selecting ? marked.includes(h) : detail === h}
             onClick={() => selecting ? setMarked(marked.includes(h) ? marked.filter(x => x !== h) : [...marked, h]) : setDetail(detail === h ? null : h)} key={h}>
             {selecting && <span>{marked.includes(h) ? '☑' : '☐'} </span>}{h}

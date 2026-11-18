@@ -4,7 +4,13 @@ export const items = [
  {id:'hat',name:'Explorer Hat',icon:'🎩',price:60,xp:50},
  {id:'backpack',name:'Trail Backpack',short:'Backpack',icon:'🎒',price:80,xp:100},
  {id:'boots',name:'Trail Boots',icon:'🥾'},
- {id:'jacket',name:'Forest Jacket',icon:'🧥',price:200,xp:500}
+ {id:'jacket',name:'Forest Jacket',icon:'🧥',price:200,xp:500},
+ {id:'scarf',name:'Trail Scarf',icon:'🧣',price:40,xp:50},
+ {id:'glasses',name:'Sunglasses',icon:'🕶️',price:50,xp:100},
+ {id:'gloves',name:'Explorer Gloves',icon:'🧤',price:65,xp:150},
+ {id:'compass',name:'Pocket Compass',icon:'🧭',price:90,xp:200},
+ {id:'bottle',name:'Water Bottle',icon:'💧',price:45,xp:100},
+ {id:'map',name:'Adventure Map',icon:'🗺️',price:75,xp:250}
 ];
 export const badges = [{name:'First Steps',icon:'🌿'},{name:'Puzzle Solver',icon:'🧩'},{name:'Trail Friend',icon:'🏕️'}];
 export const games = ['Rune Match', 'Word Trail', 'Memory', 'Pattern Path', 'Logic Maze', 'Clue Hunt'];
